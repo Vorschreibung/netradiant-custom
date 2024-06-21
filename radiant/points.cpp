@@ -243,6 +243,14 @@ int LoadFile( const char *filename, void **bufferptr ){
 	return len;
 }
 
+void Pointfile_Insert( const Vector3& v ){
+	s_pointfile.PushPoint( v );
+}
+
+void Pointfile_Show(bool b){
+	s_pointfile.show(b);
+}
+
 void Pointfile_Parse( CPointfile& pointfile ){
 	int size;
 	char    *data;

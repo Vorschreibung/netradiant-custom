@@ -32,6 +32,8 @@ void Select_EntitiesByKeyValue( const char* key, const char* value );
 
 void Select_ConnectedEntities( bool targeting, bool targets, bool focus );
 
+void HideSelected();
+
 
 void Select_SetShader( const char* shader );
 void Select_SetShader_Undo( const char* shader );

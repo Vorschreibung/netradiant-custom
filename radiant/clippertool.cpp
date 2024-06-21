@@ -122,6 +122,10 @@ void Clipper_do( bool split ){
 
 
 void Clipper_doClip(){
+	// printf("CLIP1: %ld\n", g_clipper_points._count);
+	// printf("CLIP2: %F\n", g_clipper_points._points[0].x());
+	// printf("CLIP3: %F\n", g_clipper_points._points[1].y());
+	// printf("CLIP4: %F\n", g_clipper_points._points[2].z());
 	if ( Clipper_ok() ) {
 		UndoableCommand undo( "clipperClip" );
 		Clipper_do( false );

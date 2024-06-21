@@ -27,8 +27,13 @@
 
 #pragma once
 
+#include "generic/vector.h"
+
 void Pointfile_Clear();
 void Pointfile_Delete();
+
+void Pointfile_Insert( const Vector3& v );
+void Pointfile_Show(bool b);
 
 void Pointfile_Construct();
 void Pointfile_Destroy();

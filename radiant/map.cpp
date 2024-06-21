@@ -1938,6 +1938,20 @@ void Scene_FindEntityBrush( std::size_t entity, std::size_t brush, scene::Path& 
 	}
 }
 
+void Scene_FindEntityBrushByBrush( std::size_t entity, std::size_t brush, scene::Path& path ){
+	// @TODO
+	path.push( makeReference( GlobalSceneGraph().root() ) );
+
+	Node_getTraversable( path.top() )->traverse( EntityFindByIndexWalker( entity, path ) );
+
+	if ( path.size() == 2 ) {
+		scene::Traversable* traversable = Node_getTraversable( path.top() );
+		if ( traversable != 0 ) {
+			traversable->traverse( BrushFindByIndexWalker( brush, path ) );
+		}
+	}
+}
+
 inline bool Node_hasChildren( scene::Node& node ){
 	scene::Traversable* traversable = Node_getTraversable( node );
 	return traversable != 0 && !traversable->empty();

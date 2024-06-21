@@ -82,6 +82,10 @@ CPPFLAGS_QTWIDGETS ?= $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) $(PKGCONFIG) Qt
 LIBS_QTWIDGETS     ?= $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) $(PKGCONFIG) Qt5Widgets --libs-only-L --libs-only-l $(STDERR_TO_DEVNULL))
 CPPFLAGS_QTWIDGETS := $(CPPFLAGS_QTWIDGETS)
 LIBS_QTWIDGETS     := $(LIBS_QTWIDGETS)
+CPPFLAGS_LUAJIT    ?= $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) $(PKGCONFIG) luajit --cflags $(STDERR_TO_DEVNULL))
+LIBS_LUAJIT        ?= $(shell PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) $(PKGCONFIG) luajit --libs-only-L --libs-only-l $(STDERR_TO_DEVNULL))
+CPPFLAGS_LUAJIT    := $(CPPFLAGS_LUAJIT)
+LIBS_LUAJIT        := $(LIBS_LUAJIT)
 CPPFLAGS_GL        ?=
 LIBS_GL            ?= -lGL # -lopengl32 on Win32
 CPPFLAGS_DL        ?=
@@ -835,8 +839,8 @@ libetclib.$(A): \
 	libs/etclib.o \
 
 $(INSTALLDIR)/radiant.$(EXE): LDFLAGS_EXTRA := $(MWINDOWS)
-$(INSTALLDIR)/radiant.$(EXE): LIBS_EXTRA := $(LIBS_GL) $(LIBS_DL) $(LIBS_XML) $(LIBS_GLIB) $(LIBS_QTWIDGETS) $(LIBS_ZLIB)
-$(INSTALLDIR)/radiant.$(EXE): CPPFLAGS_EXTRA := $(CPPFLAGS_GL) $(CPPFLAGS_DL) $(CPPFLAGS_XML) $(CPPFLAGS_GLIB) $(CPPFLAGS_QTWIDGETS) -Ilibs -Iinclude
+$(INSTALLDIR)/radiant.$(EXE): LIBS_EXTRA := $(LIBS_GL) $(LIBS_DL) $(LIBS_XML) $(LIBS_GLIB) $(LIBS_QTWIDGETS) $(LIBS_ZLIB) $(LIBS_LUAJIT)
+$(INSTALLDIR)/radiant.$(EXE): CPPFLAGS_EXTRA := $(CPPFLAGS_GL) $(CPPFLAGS_DL) $(CPPFLAGS_XML) $(CPPFLAGS_GLIB) $(CPPFLAGS_QTWIDGETS) $(CPPFLAGS_LUAJIT) -Ilibs -Iinclude
 $(INSTALLDIR)/radiant.$(EXE): \
 	radiant/autosave.o \
 	radiant/brushmanip.o \
@@ -876,6 +880,8 @@ $(INSTALLDIR)/radiant.$(EXE): \
 	radiant/gtkmisc.o \
 	radiant/help.o \
 	radiant/image.o \
+	radiant/luaapi.o \
+	radiant/luaengine.o \
 	radiant/mainframe.o \
 	radiant/main.o \
 	radiant/map.o \

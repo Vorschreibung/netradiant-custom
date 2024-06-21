@@ -48,6 +48,8 @@ public:
 
 void Clipper_setPlanePoints( const ClipperPoints& points );
 const ClipperPoints& Clipper_getPlanePoints();
+void Clipper_doClip();
+void Clipper_doFlip();
 void Clipper_Construct();
 void Clipper_Destroy();
 void Clipper_modeChanged( bool isClipper );

@@ -95,6 +95,7 @@
 #include "gtkdlgs.h"
 #include "gtkmisc.h"
 #include "help.h"
+#include "luaengine.h"
 #include "map.h"
 #include "mru.h"
 #include "patchdialog.h"
@@ -1167,6 +1168,7 @@ void create_misc_menu( QMenuBar *menubar ){
 	create_menu_item_with_mnemonic( menu, "Set 2D &Background image...", FreeCaller<WXY_SetBackgroundImage>() );
 	create_menu_item_with_mnemonic( menu, "Fullscreen", "Fullscreen" );
 	create_menu_item_with_mnemonic( menu, "Maximize view", "MaximizeView" );
+	create_menu_item_with_mnemonic( menu, "Run Lua...", "RunLua" );
 }
 
 void create_entity_menu( QMenuBar *menubar ){
@@ -2058,6 +2060,7 @@ void MainFrame_Construct(){
 
 	GlobalCommands_insert( "Fullscreen", FreeCaller<MainFrame_toggleFullscreen>(), QKeySequence( "F11" ) );
 	GlobalCommands_insert( "MaximizeView", FreeCaller<Maximize_View>(), QKeySequence( "F12" ) );
+	GlobalCommands_insert( "RunLua", FreeCaller<lad_run_menu_action>(), QKeySequence( "F2" ) );
 
 	CSG_registerCommands();
 
