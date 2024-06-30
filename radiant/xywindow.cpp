@@ -1288,6 +1288,13 @@ void XYWnd::XY_DrawAxis(){
 	GlobalOpenGL().drawChar( g_AxisName[nDim2] );
 }
 
+template <typename T>
+T next_pow2(T x) {
+  T p = 1;
+  while (p < x) p *= 2;
+  return p;
+}
+
 void XYWnd::XY_DrawGrid() {
 	float x, y;
 	char text[32];
@@ -1295,10 +1302,12 @@ void XYWnd::XY_DrawGrid() {
 	step = minor_step = stepx = stepy = GetGridSize();
 
 	int minor_power = Grid_getPower();
-	while ( ( minor_step * m_fScale ) <= 4.0f ) { // make sure minor grid spacing is at least 4 pixels on the screen
-		++minor_power;
-		minor_step *= 2;
-	}
+	// int minor_power = (next_pow2(GetGridSize()) / 2) - 1;
+	printf("%d\n", minor_power);
+	// while ( ( minor_step * m_fScale ) <= 4.0f ) { // make sure minor grid spacing is at least 4 pixels on the screen
+	// 	++minor_power;
+	// 	minor_step *= 2;
+	// }
 
 	int power = minor_power;
 	while ( ( power % 3 ) != 0 || ( step * m_fScale ) <= 32.0f ) { // make sure major grid spacing is at least 32 pixels on the screen
@@ -1321,8 +1330,8 @@ void XYWnd::XY_DrawGrid() {
 	gl().glDisable( GL_BLEND );
 	gl().glLineWidth( 1 );
 
-	const float w = ( m_nWidth / 2 / m_fScale );
-	const float h = ( m_nHeight / 2 / m_fScale );
+	const float w = ( float(m_nWidth) / 2 / m_fScale );
+	const float h = ( float(m_nHeight) / 2 / m_fScale );
 
 	NDIM1NDIM2( m_viewType )
 

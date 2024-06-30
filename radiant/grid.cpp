@@ -64,6 +64,9 @@ enum GridPower
 	GRIDPOWER_256 = 8,
 	GRIDPOWER_512 = 9,
 	GRIDPOWER_1024 = 10,
+	GRIDPOWER_CUSTOM_1 = 100,
+	GRIDPOWER_CUSTOM_2 = 101,
+	GRIDPOWER_CUSTOM_3 = 102,
 };
 
 
@@ -83,6 +86,9 @@ const char *const g_gridnames[] = {
 	"256",
 	"512",
 	"1024",
+	"custom1",
+	"custom2",
+	"custom3",
 };
 
 std::array<QAction *, std::size( g_gridnames )> g_gridActions{};
@@ -101,6 +107,10 @@ inline void gridActions_setChecked( GridPower gridPower ){
 	action->setChecked( true );
 }
 
+float g_grid_custom_1 = 1.0;
+float g_grid_custom_2 = 1.0;
+float g_grid_custom_3 = 1.0;
+
 int g_grid_default = GridDefault_forGridPower( GRIDPOWER_16 );
 
 int g_grid_power = GridPower_forGridDefault( g_grid_default );
@@ -112,7 +122,12 @@ int Grid_getPower(){
 }
 
 inline float GridSize_forGridPower( int gridPower ){
-	return pow( 2.0f, gridPower );
+	if (gridPower >= GRIDPOWER_CUSTOM_1) {
+		// @TODO
+		return 8.0f;
+	} else {
+        return pow( 2.0f, gridPower );
+    }
 }
 
 float g_gridsize = GridSize_forGridPower( g_grid_power );
@@ -201,6 +216,9 @@ void Grid_registerCommands(){
 	GlobalCommands_insert( "SetGrid256", FreeCaller<setGridPower<GRIDPOWER_256>>(), QKeySequence( "9" ) );
 	GlobalCommands_insert( "SetGrid512", FreeCaller<setGridPower<GRIDPOWER_512>>() );
 	GlobalCommands_insert( "SetGrid1024", FreeCaller<setGridPower<GRIDPOWER_1024>>() );
+	GlobalCommands_insert( "SetGridCustom1", FreeCaller<setGridPower<GRIDPOWER_CUSTOM_1>>() );
+	GlobalCommands_insert( "SetGridCustom2", FreeCaller<setGridPower<GRIDPOWER_CUSTOM_2>>() );
+	GlobalCommands_insert( "SetGridCustom3", FreeCaller<setGridPower<GRIDPOWER_CUSTOM_3>>() );
 }
 
 
@@ -219,7 +237,10 @@ void Grid_constructMenu( QMenu* menu ){
 		create_menu_item_with_mnemonic( menu, "Grid128", "SetGrid128" ),
 		create_menu_item_with_mnemonic( menu, "Grid256", "SetGrid256" ),
 		create_menu_item_with_mnemonic( menu, "Grid512", "SetGrid512" ),
-		create_menu_item_with_mnemonic( menu, "Grid1024", "SetGrid1024" )
+		create_menu_item_with_mnemonic( menu, "Grid1024", "SetGrid1024" ),
+		create_menu_item_with_mnemonic( menu, "GridCustom1", "SetGridCustom1" ),
+		create_menu_item_with_mnemonic( menu, "GridCustom2", "SetGridCustom2" ),
+		create_menu_item_with_mnemonic( menu, "GridCustom3", "SetGridCustom3" )
 	};
 	// make them radio
 	auto *group = new QActionGroup( menu );
@@ -252,6 +273,23 @@ void Grid_constructPreferences( PreferencesPage& page ){
 		    StringArrayRange( coords ),
 		    IntImportCallback( maxGridCoordPowerImportCaller() ),
 		    IntExportCallback( maxGridCoordPowerExportCaller() )
+		);
+	}
+	{
+		page.appendEntry(
+			"Custom Grid 1",
+			FloatImportStringCaller( g_grid_custom_1 ),
+			FloatExportStringCaller( g_grid_custom_1 )
+		);
+		page.appendEntry(
+			"Custom Grid 2",
+			FloatImportStringCaller( g_grid_custom_2 ),
+			FloatExportStringCaller( g_grid_custom_2 )
+		);
+		page.appendEntry(
+			"Custom Grid 3",
+			FloatImportStringCaller( g_grid_custom_3 ),
+			FloatExportStringCaller( g_grid_custom_3 )
 		);
 	}
 }
